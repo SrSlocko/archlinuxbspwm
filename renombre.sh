@@ -5,8 +5,15 @@ for archivo in *; do
     # Verifica si el archivo contiene corchetes y su contenido
     if [[ $archivo =~ \[.*\] ]]; then
         nuevo_nombre=$(echo "$archivo" | sed 's/\[[^]]*\]//g')
-        mv "$archivo" "$nuevo_nombre"
-        echo "Corchetes y su contenido eliminados en: $archivo"
+        if [ "$archivo" != "$nuevo_nombre" ]; then
+            if [ -e "$nuevo_nombre" ]; then
+                mv -f "$archivo" "$nuevo_nombre"
+                echo "Corchetes y su contenido eliminados en: $archivo"
+            else
+                mv "$archivo" "$nuevo_nombre"
+                echo "Corchetes y su contenido eliminados en: $archivo"
+            fi
+        fi
     fi
 
     # Verifica si el archivo es .jpg o .png con nombres complicados
@@ -14,23 +21,27 @@ for archivo in *; do
         ext="${archivo##*.}"  # Obtiene la extensión del archivo (jpg o png)
         contador=1
         nuevo_nombre="imagen$contador.$ext"
-        while [[ -e $nuevo_nombre ]]; do
+        while [ -e "$nuevo_nombre" ]; do
             contador=$((contador + 1))
             nuevo_nombre="imagen$contador.$ext"
         done
-        mv "$archivo" "$nuevo_nombre"
-        echo "Imagen renombrada a: $nuevo_nombre"
+        if [ "$archivo" != "$nuevo_nombre" ]; then
+            mv -f "$archivo" "$nuevo_nombre"
+            echo "Imagen renombrada a: $nuevo_nombre"
+        fi
     fi
 
     # Verifica si el archivo es .jpeg
     if [[ $archivo == *.jpeg && ! $archivo =~ ^imagenjpeg[0-9]+\.jpeg$ ]]; then
         contador=1
         nuevo_nombre="imagenjpeg$contador.jpeg"
-        while [[ -e $nuevo_nombre ]]; do
+        while [ -e "$nuevo_nombre" ]; do
             contador=$((contador + 1))
             nuevo_nombre="imagenjpeg$contador.jpeg"
         done
-        mv "$archivo" "$nuevo_nombre"
-        echo "Imagen renombrada a: $nuevo_nombre"
+        if [ "$archivo" != "$nuevo_nombre" ]; then
+            mv -f "$archivo" "$nuevo_nombre"
+            echo "Imagen renombrada a: $nuevo_nombre"
+        fi
     fi
 done

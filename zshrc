@@ -6,12 +6,13 @@
 #  └┐┌┘├─┤├┬┘└─┐
 #   └┘ ┴ ┴┴└─└─┘
 export PATH="/sbin:$PATH"
-export VISUAL='geany'
+export VISUAL='code'
 export EDITOR='nvim'
 export TERMINAL='alacritty'
-export BROWSER='firefox'
+export BROWSER='google-chrome-stable'
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export PATH="/home/leonedev/scripts:$PATH"
+export LLVM_CONFIG=/usr/bin/llvm-config
 export JAVA_HOME=/usr/lib/jvm/default
 export PATH=$JAVA_HOME/bin:$PATH
 if [ -d "$HOME/.local/bin" ] ;
@@ -117,6 +118,11 @@ fi
 #  ├─┤│  │├─┤└─┐
 #  ┴ ┴┴─┘┴┴ ┴└─┘
 # Instala un paquete usando pacman o yay y usa "qwe" como contraseña
+alias mk="mkdir"
+alias wallanima='xwinwrap -g 1366x768+0+0 -ov -- mpv -wid WID --loop'
+alias wallanime='xwinwrap -g 2732x768+0+0 -ov -- mpv -wid WID --loop'
+alias sruby='sudo ruby'
+alias ssruby='echo "qwe" | sudo -S ruby'
 alias i="function inst() { echo 'qwe' | sudo -S pacman -S \$1 || yay -S \$1; }; inst"
 #Copiado y Cortado avanzado
 alias mover='function neofunction() { echo -n "¿Deseas copiar (c) o mover (m) los archivos? "; read action; echo -n "Especifica el destino (~/./ para el directorio actual): "; read destination; if [ "$action" = "c" ]; then cp "$@" "$destination"; elif [ "$action" = "m" ]; then mv "$@" "$destination"; else echo "Acción no válida"; fi; }; neofunction'
@@ -124,15 +130,17 @@ alias mover='function neofunction() { echo -n "¿Deseas copiar (c) o mover (m) l
 alias act-sist="sudo reflector --verbose --latest 5 --country 'Estados Unidos' --age 6 --sort rate --save /etc/pacman.d/mirrorlist && sudo pacman -Syu && yay -Syu && sudo pacman -Sc && sudo pacman -Scc && sudo fstrim -av"
 
 # Descomprime y comprime archivos
-alias extraer="function descom() { if [[ \$1 == *'.zip' ]]; then unzip \$1; elif [[ \$1 == *'.rar' ]]; then unrar x \$1; elif [[ \$1 == *'.7z' ]]; then 7z x \$1; else echo 'Formato no compatible'; fi; }; descom"
+#alias extraer="function descom() { if [[ \$1 == *'.zip' ]]; then unzip \$1; elif [[ \$1 == *'.rar' ]]; then unrar x \$1; elif [[ \$1 == *'.7z' ]]; then 7z x \$1; else echo 'Formato no compatible'; fi; }; descom"
+
+alias extraer="function descom() { for archivo in \"\$@\"; do if [[ \$archivo == *'.zip' ]]; then unzip \$archivo; elif [[ \$archivo == *'.rar' ]]; then unrar x \$archivo; elif [[ \$archivo == *'.7z' ]]; then 7z x \$archivo; else echo 'Formato no compatible para \$archivo'; fi; done; }; descom"
 alias comprimir="function comprim() { if [[ \$1 == *'.zip' ]]; then zip -r \$1 \${@:2}; elif [[ \$1 == *'.rar' ]]; then rar a \$1 \${@:2}; elif [[ \$1 == *'.7z' ]]; then 7z a \$1 \${@:2}; else echo 'Formato no compatible'; fi; }; comprim"
 
 # Actualiza el bootloader GRUB
 alias act-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-
+alias redes='nmcli dev wifi'
 # Limpia paquetes huérfanos y realiza TRIM en el disco
 alias limpiar="sudo pacman -Rns $(pacman -Qtdq) && sudo fstrim -av"
-
+alias win='pwsh'
 # Actualiza el sistema y los paquetes AUR
 alias Syu="sudo pacman -Syu && yay -Syu"
 alias vswap="cd ~/.local/state/nvim/swap"
@@ -142,7 +150,8 @@ alias springs='google-chrome-stable https://start.spring.io/'
 
 #Conversor de pdf a imagenes
 alias pdfimg='pdfimg.sh'
-
+alias wallpaper-ani='wallpaperani.sh'
+alias mediafire='mediafire.sh'
 # Navega a la carpeta "Documentos"
 alias doc='cd ~/Documentos && pwd'
 alias ima='cd ~/Imágenes && pwd'
@@ -155,9 +164,9 @@ alias esc='cd ~/Escritorio && pwd'
 alias mp3="python ytaudio.py"
 alias witch="pwd"
 alias ..="cd .."
-
 #Python venv
-alias avenv="source venv/bin/activate"
+alias mvenv="python -m venv myenv"
+alias avenv="source myenv/bin/activate"
 alias dvenv="deactivate"
 
 # Abre el editor de texto NeoVim
@@ -171,12 +180,14 @@ alias admin="echo qwe | sudo -S"
 #alias ytaudioplus='/home/leonedev/scripts/ytdlp.sh'
 
 alias ytaudio='ytaudio.sh && ls'
+alias pinsr='requirements.sh'
 alias renom='renombre.sh && ls'
 alias eliminarcarpetas='eliminarcarpetas.sh && ls'
 alias ra='ranger'
 alias ez='nvim ~/.zshrc'
 alias rz='source ~/.zshrc'
 alias S='sudo pacman -S'
+alias SS='yay -S'
 alias convertmp3='convertmp3.sh'
 alias org='python organizador.py'
 alias asci='asciconverter.sh'
